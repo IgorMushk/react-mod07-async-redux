@@ -1,10 +1,14 @@
-const tasksSlice = {
+import { createSlice } from '@reduxjs/toolkit';
+
+const tasksInitialState = {
+  items: [],
+  isLoading: false,
+  error: null,
+};
+
+const tasksSlice = createSlice({
   name: 'tasks',
-  initialState: {
-    items: [],
-    isLoading: false,
-    error: null,
-  },
+  initialState: tasksInitialState,
   reducers: {
     // Выполнится в момент старта HTTP-запроса
     fetchingInProgress(state) {
@@ -22,7 +26,9 @@ const tasksSlice = {
       state.error = action.payload;
     },
   },
-};
+});
 
 export const { fetchingInProgress, fetchingSuccess, fetchingError } =
   tasksSlice.actions;
+export const tasksReduser =
+  tasksSlice.reducer;
