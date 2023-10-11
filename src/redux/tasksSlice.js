@@ -1,57 +1,51 @@
-import { createSlice } from '@reduxjs/toolkit';
-import { fetchTasks } from './operations';
+import { createSlice, nanoid } from "@reduxjs/toolkit";
+//const { createSlice, nanoid } = require('@reduxjs/toolkit');
+//import { createSlice } from "@reduxjs/toolkit";
 
-const tasksInitialState = {
-  items: [],
-  isLoading: false,
-  error: null,
-};
-
-// const tasksSlice = createSlice({
-//   name: 'tasks',
-//   initialState: tasksInitialState,
-//   reducers: {
-//     // Выполнится в момент старта HTTP-запроса
-//     fetchingInProgress(state) {
-//       state.isLoading = true;
-//     },
-//     // Выполнится если HTTP-запрос завершился успешно
-//     fetchingSuccess(state, action) {
-//       state.isLoading = false;
-//       state.error = null;
-//       state.items = action.payload;
-//     },
-//     // Выполнится если HTTP-запрос завершился с ошибкой
-//     fetchingError(state, action) {
-//       state.isLoading = false;
-//       state.error = action.payload;
-//     },
-//   },
-// });
-
-// export const { fetchingInProgress, fetchingSuccess, fetchingError } =
-//   tasksSlice.actions;
-// export const tasksReduser =
-//   tasksSlice.reducer;
+const tasksInitialState = [
+  { id: 0, text: 'Learn HTML and CSS', completed: true },
+  { id: 1, text: 'Get good at JavaScript', completed: true },
+  { id: 2, text: 'Master React', completed: false },
+  { id: 3, text: 'Discover Redux', completed: false },
+  { id: 4, text: 'Build amazing apps', completed: false },
+];
 
 const tasksSlice = createSlice({
+  // Имя слайса
   name: 'tasks',
+  // Начальное состояние редюсера слайса
   initialState: tasksInitialState,
-  // Добавляем обработку внешних экшенов
-  extraReducers: {
-    [fetchTasks.panding](state, action) {
-      state.isLoading = true;
+  // Объект редюсеров
+  reducers: {
+    addTask: {
+      reducer(state, action) {
+        state.push(action.payload);
+      },
+      prepare(text) {
+        return {
+          payload: {
+            text,
+            id: nanoid(),
+            completed: false,
+          },
+        };
+      },
     },
-    [fetchTasks.fulfilled](state, action) {
-      state.isLoading = false;
-      state.error = null;
-      state.items = action.payload;
+    deleteTask(state, action) {
+      const index = state.findIndex(task => task.id === action.payload);
+      state.splice(index, 1);
     },
-    [fetchTasks.rejected](state, action) {
-      state.isLoading = false;
-      state.error = action.payload;
+    toggleCompleted(state, action) {
+      for (const task of state) {
+        if (task.id === action.payload) {
+          task.completed = !task.completed;
+          break;
+        }
+      }
     },
   },
 });
 
-export const tasksReduser = tasksSlice.reducer;
+// Экспортируем генераторы экшенов и редюсер
+export const { addTask, deleteTask, toggleCompleted } = tasksSlice.actions;
+export const tasksReducer = tasksSlice.reducer;
