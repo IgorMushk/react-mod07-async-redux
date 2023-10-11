@@ -7,10 +7,22 @@ const tasksSlice = {
   },
   reducers: {
     // Выполнится в момент старта HTTP-запроса
-    fetchingInProgress(state) {},
+    fetchingInProgress(state) {
+      state.isLoading = true;
+    },
     // Выполнится если HTTP-запрос завершился успешно
-    fetchingSuccess() {},
+    fetchingSuccess(state, action) {
+      state.isLoading = false;
+      state.error = null;
+      state.items = action.payload;
+    },
     // Выполнится если HTTP-запрос завершился с ошибкой
-    fetchingError() {},
+    fetchingError(state, action) {
+      state.isLoading = false;
+      state.error = action.payload;
+    },
   },
 };
+
+export const { fetchingInProgress, fetchingSuccess, fetchingError } =
+  tasksSlice.actions;
