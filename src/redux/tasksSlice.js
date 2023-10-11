@@ -1,51 +1,45 @@
-import { createSlice, nanoid } from "@reduxjs/toolkit";
-//const { createSlice, nanoid } = require('@reduxjs/toolkit');
-//import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from '@reduxjs/toolkit';
+import { fetchTasks } from './operations';
 
-const tasksInitialState = [
-  { id: 0, text: 'Learn HTML and CSS', completed: true },
-  { id: 1, text: 'Get good at JavaScript', completed: true },
-  { id: 2, text: 'Master React', completed: false },
-  { id: 3, text: 'Discover Redux', completed: false },
-  { id: 4, text: 'Build amazing apps', completed: false },
-];
+const tasksInitialState = {
+  items: [],
+  isLoading: false,
+  error: null,
+};
 
 const tasksSlice = createSlice({
-  // Имя слайса
   name: 'tasks',
-  // Начальное состояние редюсера слайса
   initialState: tasksInitialState,
-  // Объект редюсеров
-  reducers: {
-    addTask: {
-      reducer(state, action) {
-        state.push(action.payload);
-      },
-      prepare(text) {
-        return {
-          payload: {
-            text,
-            id: nanoid(),
-            completed: false,
-          },
-        };
-      },
+  // Добавляем обработку внешних экшенов
+  extraReducers: {
+    [fetchTasks.panding](state, action) {
+      state.isLoading = true;
     },
-    deleteTask(state, action) {
-      const index = state.findIndex(task => task.id === action.payload);
-      state.splice(index, 1);
+    [fetchTasks.fulfilled](state, action) {
+      state.isLoading = false;
+      state.error = null;
+      state.items = action.payload;
     },
-    toggleCompleted(state, action) {
-      for (const task of state) {
-        if (task.id === action.payload) {
-          task.completed = !task.completed;
-          break;
-        }
-      }
+    [fetchTasks.rejected](state, action) {
+      state.isLoading = false;
+      state.error = action.payload;
+    },
+    [deleteTask.pending](state) {
+      state.isLoading = true;
+    },
+    [deleteTask.fulfilled](state, action) {
+      state.isLoading = false;
+      state.error = null;
+      const index = state.items.findIndex(
+        task => task.id === action.payload.id
+      );
+      state.items.splice(index, 1);
+    },
+    [deleteTask.rejected](state, action) {
+      state.isLoading = false;
+      state.error = action.payload;
     },
   },
 });
 
-// Экспортируем генераторы экшенов и редюсер
-export const { addTask, deleteTask, toggleCompleted } = tasksSlice.actions;
-export const tasksReducer = tasksSlice.reducer;
+export const tasksReduser = tasksSlice.reducer;
