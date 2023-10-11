@@ -39,9 +39,18 @@ const tasksSlice = createSlice({
   initialState: tasksInitialState,
   // Добавляем обработку внешних экшенов
   extraReducers: {
-    [fetchTasks.panding](state, action) {},
-    [fetchTasks.fulfilled](state, action) {},
-    [fetchTasks.rejected](state, action) {},
+    [fetchTasks.panding](state, action) {
+      state.isLoading = true;
+    },
+    [fetchTasks.fulfilled](state, action) {
+      state.isLoading = false;
+      state.error = null;
+      state.items = action.payload;
+    },
+    [fetchTasks.rejected](state, action) {
+      state.isLoading = false;
+      state.error = action.payload;
+    },
   },
 });
 
