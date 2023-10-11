@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/react-mod07-async-redux/static/css/main.28348e4d.css",
-    "main.js": "/react-mod07-async-redux/static/js/main.ca03b768.js",
+    "main.js": "/react-mod07-async-redux/static/js/main.4679b896.js",
     "index.html": "/react-mod07-async-redux/index.html",
     "main.28348e4d.css.map": "/react-mod07-async-redux/static/css/main.28348e4d.css.map",
-    "main.ca03b768.js.map": "/react-mod07-async-redux/static/js/main.ca03b768.js.map"
+    "main.4679b896.js.map": "/react-mod07-async-redux/static/js/main.4679b896.js.map"
   },
   "entrypoints": [
     "static/css/main.28348e4d.css",
-    "static/js/main.ca03b768.js"
+    "static/js/main.4679b896.js"
   ]
 }
