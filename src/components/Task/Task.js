@@ -23,7 +23,7 @@ export const Task = ({ task }) => {
   // Отправляем результат - экшен переключения статуса задачи
   const handleToggle = () => {
     console.log('handleToggle >>', task.id);
-    dispatch(toggleCompleted(task.id))
+    dispatch(toggleCompleted(task))
   };
 
   return (
