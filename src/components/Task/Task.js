@@ -10,6 +10,7 @@ import { deleteTask, toggleCompleted } from 'redux/operations';
 //-import { deleteTask, toggleCompleted } from "redux/tasksSlice";
 
 export const Task = ({ task }) => {
+  //console.log('Task >>', task);
   // Получаем ссылку на функцию отправки экшенов
   const dispatch = useDispatch();
 
@@ -20,7 +21,10 @@ export const Task = ({ task }) => {
   
   // Вызываем генератор экшена и передаём идентификатор задачи
   // Отправляем результат - экшен переключения статуса задачи
-  const handleToggle = () => dispatch(toggleCompleted(task.id));
+  const handleToggle = () => {
+    console.log('handleToggle >>', task.id);
+    dispatch(toggleCompleted(task.id))
+  };
 
   return (
     <div className={css.wrapper}>
